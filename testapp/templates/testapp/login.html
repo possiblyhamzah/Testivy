@@ -1,0 +1,33 @@
+{% extends "testapp/base.html" %}
+{% block title %}
+    Flights
+{% endblock %}
+
+{% block body %}
+<h1 style="text-align: center;">Testivy</h1>
+<br> <h3>Login</h3> <br>
+
+{% if message %}
+    <div>
+        {{ message }}
+    </div>
+{% endif %}
+
+<form action="{% url 'login_view' %}" method="post" autocomplete="off">
+    {% csrf_token %}
+
+    Username:
+    <div class="form-group">
+        <input class="form-control" name="username" type="text"/>
+    </div>
+    Password:
+    <div class="form-group">
+        <input class="form-control" name="password" type="password"/>
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-primary">Login</button>
+    </div>
+</form>
+    
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Test
+{% endblock %}
+
+{% block body %}
+
+    <div class="col-3" style="width: 15%;">
+        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+            <li class="nav-item" >
+                <a class="nav-link" href="{% url 'tests' %}">Your tests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'chapters' %}">Your chapters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'records' %}">Your records</a>
+            </li>
+            
+        </ul>
+    </div>
+  
+  <div class="tab-content">
+    <br>
+    <h1 style="text-align: center;">Testivy</h1>
+        <div id="home" class="container tab-pane active"><br>
+            {% for test in tests %}
+                <li><a href="{% url 'test' test.id %}">{{test.name}}</a> : {{test.userPercentage}}%</li>
+            {% endfor %}
+        
+        </div>
+    </div>
+
+  
+    
+{% endblock %}

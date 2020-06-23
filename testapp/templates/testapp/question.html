@@ -1,0 +1,53 @@
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Flights
+{% endblock %}
+
+{% block script %}
+<script>
+      
+    $(document).on('submit', '#post-form',function(e){
+            e.preventDefault();
+            var form = $(this).closest("form");
+            $.ajax({
+                type:'POST',
+                url:form.attr("action") ,
+                data:{
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    answer:$("input[name='answer']:checked").val(),
+                    action: 'post'
+                },
+                
+                success:function(json){
+                    document.getElementById("post-form").reset();
+                    const li = document.createElement('li');
+                    //li.innerHTML = ;
+                    //$(".messages").append(json.answer)//
+                }
+            });
+        });
+  </script>    
+{% endblock %}
+
+{% block body %}
+    <br>
+    {{ question }}
+    <br>
+
+    <form action="{% url 'question' test_id question_id%}" method="post" autocomplete="off" style="padding-top: 20px;" id="post-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <ul class="messages">
+                {% for choice in choices %}
+                    <li> <input name="answer" type="radio" value={{choice}} id="answer"> {{choice}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-primary">Submit Answer</button>
+        </div>
+    </form>
+
+{% endblock %}

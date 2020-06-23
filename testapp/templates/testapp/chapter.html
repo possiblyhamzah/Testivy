@@ -1,0 +1,109 @@
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Chapter
+{% endblock %}
+
+{% block script %}
+<script>
+      
+    $(document).on('submit', '#post-form',function(e){
+            e.preventDefault();
+            var form = $(this).closest("form");
+            $.ajax({
+                type:'POST',
+                url:form.attr("action") ,
+                data:{
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    name:$('#name').val(),
+                    choice1:$('#choice1').val(),
+                    choice2:$('#choice2').val(),
+                    choice3:$('#choice3').val(),
+                    choice4:$('#choice4').val(),
+                    answer:$('#answer').val(),
+                    score:$('#score').val(),
+                    //chapter:$('#chapter option:selected').text(),
+                    action: 'post'
+                },
+                
+                success:function(json){
+                    document.getElementById("post-form").reset();
+                    //document.addEventListener('DOMContentLoaded', () => {
+                    //li.innerHTML = json.title + `:` + json.description;
+                    //document.querySelector('#messages').append(li);
+                    //});
+                    let k = 3;
+                    const li = document.createElement('li');
+                    //li.innerHTML = ;
+                    $(".messages").append('<li>'+json.question+'<li>')//
+                }
+            });
+        });
+  </script>    
+{% endblock %}
+
+{% block body %}
+
+    
+    
+    <div class="col-3" style="width: 15%;">
+        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+            <li class="nav-item" >
+            <a class="nav-link" href="{% url 'tests' %}">Your tests</a>
+            </li>
+            <a class="nav-link active" href="{% url 'chapters' %}">Your chapters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'records' %}">Your records</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        
+
+        <div id="chapter" class="container tab-pane active"><br>
+            <ul class="messages">
+                {% for question in questions %}
+                    <li>{{question}}</li>
+                {% endfor %}
+            </ul>
+            <form action="{% url 'chapter' chapters.id %}" method="post" id="post-form">
+                {% csrf_token %}
+                <br>
+                <div class="form-group">
+                    <input class="form-control" name="name" id="name" placeholder="Question" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="choice1" id="choice1" placeholder="Choice 1" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="choice2" id="choice2" placeholder="Choice 2" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="choice3" id="choice3" placeholder="Choice 3" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="choice4" id="choice4" placeholder="Choice 4" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="answer" id="answer" placeholder="Answer" type="text" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" name="score" id="score" placeholder="Score" type="number" autocomplete="off"/>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

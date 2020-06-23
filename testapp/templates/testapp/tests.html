@@ -1,0 +1,103 @@
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Test
+{% endblock %}
+
+{% block script %}
+<script>
+      
+    $(document).on('submit', '#post-form',function(e){
+            e.preventDefault();
+            var form = $(this).closest("form");
+            $.ajax({
+                type:'POST',
+                url:form.attr("action") ,
+                data:{
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    name:$('#name').val(),
+                    number:$('#number').val(),
+                    chapter:$('#chapter option:selected').text(),
+                    action: 'post'
+                },
+                
+                success:function(json){
+                    document.getElementById("post-form").reset();
+                    //document.addEventListener('DOMContentLoaded', () => {
+                    //li.innerHTML = json.title + `:` + json.description;
+                    //document.querySelector('#messages').append(li);
+                    //});
+                    let k = 3;
+                    const li = document.createElement('li');
+                    //li.innerHTML = ;
+                    $(".messages").append(`<li><a href="/test/${json.id}"> ${json.name}</a></li>`)//
+                }
+            });
+        });
+  </script>    
+{% endblock %}
+
+{% block body %}
+
+    <div class="col-3" style="width: 15%;">
+        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+            <li class="nav-item" >
+                <a class="nav-link active" href="{% url 'tests' %}">Your tests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'chapters' %}">Your chapters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'records' %}">Your records</a>
+            </li>
+        </ul>
+    </div>
+  
+  <div class="tab-content">
+        <br>
+        <h1 style="text-align: center;">Testivy</h1>
+        <div id="home" class="container tab-pane active"><br>
+            <h3 style="padding: 10px;">Your tests:</h3>
+            
+            <ul class="messages">
+                {% for test in tests %}
+                    <li><a href="{% url 'test' test.id %}">{{test.name}}</a></li>
+                {% endfor %}
+            </ul>
+            <br>
+            
+            <form action="{% url 'tests' %}" method="post" id="post-form">
+                {% csrf_token %}
+                <h3 style="padding: 10px;">Make a test!</h3>
+                <div class="form-group">
+                    <input class="form-control" name="name" id="name"  placeholder="Name of test" type="text" autocomplete="off"/>
+                </div>
+                
+                <div class="form-group">
+                    <input class="form-control" name="number" id="number"  placeholder="Number of questions" type="number" autocomplete="off"/>
+                </div>
+
+                <div class="input-group mb-3">  
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Name of chapter</label>
+                    </div>  
+                    <select class="custom-select" id="chapter" name="chapter" class="chapter">
+                        
+                        {% for chapter in chapters %}
+                            <option >{{ chapter.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>  
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary">Make</button>
+                </div>
+            </form>
+        
+        </div>
+    </div>
+
+  
+    
+{% endblock %}

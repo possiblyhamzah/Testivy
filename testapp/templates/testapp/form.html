@@ -1,0 +1,48 @@
+
+
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Test
+{% endblock %}
+
+
+{% block script %}
+<script>
+      
+    $(document).on('submit', '#post-form',function(e){
+            e.preventDefault();
+            var form = $(this).closest("form");
+            $.ajax({
+                type:'POST',
+                url:form.attr("action") ,
+                data:{
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                
+                success:function(json){
+                    console.log("works!!!")
+                }
+            });
+        });
+  </script>    
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <form method="POST" id="post-form" action='{% url "check" %}'>
+        {% csrf_token %}
+
+        <div class="form-group">
+            <button class="btn btn-primary" id="button">Make</button>
+        </div>
+    </form>
+    
+    
+</div>
+
+  
+    
+{% endblock %}

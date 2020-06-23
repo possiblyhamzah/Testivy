@@ -1,0 +1,61 @@
+@media screen and (max-height: 450px) {
+    .col-3 {padding-top: 15px;}
+}
+
+@media (min-width: 900px) 
+{
+    h2::before 
+    {
+        content: "No tests at the moment.";
+    }
+}
+
+@media (max-width: 899px) 
+{
+    h2::before 
+    {
+        content: "No tests.";
+    }
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+}
+
+.col-3 {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+  
+.sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+  
+.col-3 a:hover {
+    color: black;
+}
+  
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+}
+  
+li {
+    padding: 0;
+    list-style-type: none;
+}
+

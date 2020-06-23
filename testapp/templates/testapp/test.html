@@ -1,0 +1,45 @@
+{% extends "testapp/base.html" %}
+
+{% block title %}
+    Test
+{% endblock %}
+
+{% block body %}
+
+    <div class="col-3" style="width: 15%;">
+        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+            <li class="nav-item" >
+                <a class="nav-link active" href="{% url 'tests' %}">Your tests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'chapters' %}">Your chapters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'records' %}">Your records</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        {% for question in questions %}
+            <li><a href="{% url 'question' test_id forloop.counter0 %}">{{question}}</a></li>
+        {% endfor %}
+
+        {% if isCompleted %}
+            <div>
+                You have completed the test. <br>
+                Your scored {{ score }} out of {{ total }} <br>
+                Your percentage {{ percentage }} %<br>
+            </div>
+        {% else %}
+            <form action="{% url 'test' test_id %}" method="post" autocomplete="off" style="padding-top: 20px;" id="post-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <button class="btn btn-primary">Submit Test</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+
+{% endblock %}
